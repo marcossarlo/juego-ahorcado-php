@@ -20,7 +20,7 @@ function print_wrong_letter() {
     clear();
     $GLOBALS["attempts"]++;
     echo "Letra incorrecta 😾. Te quedan " . (MAX_ATTEMPTS - $GLOBALS["attempts"]) . " intentos.";
-    sleep(2);
+    sleep(1);
 }
 
 function print_man() {
@@ -137,34 +137,51 @@ define("MAX_ATTEMPTS", 6);
 
 echo "😼 ¡Jueguemos al ahorcado! \n\n";
 
-// Inicializamos el juego
-$choosen_word = $possible_words[ rand(0, 9) ];
-$choosen_word = strtolower($choosen_word);
-$word_length = strlen($choosen_word);
-$discovered_letters = str_pad("", $word_length, "_");
-$attempts = 0;
-
 do {
-    // Damos la bienvenida al jugador
-    print_game();
+    // Inicializamos el juego
+    $choosen_word = $possible_words[ rand(0, count($possible_words)-1) ];
+    $choosen_word = strtolower($choosen_word);
+    $word_length = strlen($choosen_word);
+    $discovered_letters = str_pad("", $word_length, "_");
+    $attempts = 0;
+    $playYes = true;
 
-    // Pedimos que escriba
-    $player_letter = readline("Escribe una letra: ");
-    $player_letter = strtolower($player_letter);
-
-    // Empezamos a validar
-    if ( str_contains($choosen_word, $player_letter) ) {
-        $discovered_letters = check_letters($choosen_word, $player_letter, $discovered_letters);
-    }
-    else {
-        print_wrong_letter();
-    }
     clear();
+    do {
+        // Damos la bienvenida al jugador
+        print_game();
+                
+        // Pedimos que escriba
+        $player_letter = readline("Escribe una letra: ");
+        $player_letter = strtolower($player_letter);
 
-} while($attempts < MAX_ATTEMPTS && $discovered_letters != $choosen_word);
+        // Empezamos a validar
+        if ( str_contains($choosen_word, $player_letter) ) {
+            $discovered_letters = check_letters($choosen_word, $player_letter, $discovered_letters);
+        }
+        else {
+            print_wrong_letter();
+        }
+        clear();
 
-end_game();
+    } while($attempts < MAX_ATTEMPTS && $discovered_letters != $choosen_word);
+
+    end_game();
+    
+    echo "\n\n";
+
+    $play = readline("Deseas seguir jugando?? [Si] o [No]: ");
+    $play = strtolower($play);
+
+    if ($play == "si")
+        $playYes = true;
+    else
+        $playYes = false;
+} while ($playYes);
+
+
 echo "\n";
+
 /*
 
 Ideas a mejorar (retos):
