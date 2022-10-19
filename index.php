@@ -1,43 +1,31 @@
 <?php
 
 function clear() {
-
     if (PHP_OS === "WINNT")
         system("cls");
     else
         system("clear");
-
 }
 
 function check_letters($word, $letter, $discovered_letters) {
-
     $offset = 0;
     while ( ( $letter_position = strpos($word, $letter, $offset) ) !== false ) {
-
         $discovered_letters[$letter_position] = $letter;
         $offset = $letter_position + 1;
-
     }
-
     return $discovered_letters;
-    
 }
 
 function print_wrong_letter() {
-
     clear();
     $GLOBALS["attempts"]++;
     echo "Letra incorrecta 😾. Te quedan " . (MAX_ATTEMPTS - $GLOBALS["attempts"]) . " intentos.";
     sleep(2);
-
 }
 
 function print_man() {
-
     global $attempts;
-    
     switch ($attempts) {
-
         case 0:
             echo "
             +---+
@@ -48,8 +36,7 @@ function print_man() {
                 |
             =========
             ";
-            break;
-           
+            break;           
         case 1:
             echo "
             +---+
@@ -61,7 +48,6 @@ function print_man() {
             =========
             ";
             break;
-
         case 2:
             echo "
             +---+
@@ -73,7 +59,6 @@ function print_man() {
             =========
             ";
             break;
-
         case 3:
             echo "
             +---+
@@ -85,7 +70,6 @@ function print_man() {
             =========
             ";
             break;
-
         case 4:
             echo "
             +---+
@@ -97,7 +81,6 @@ function print_man() {
             =========
             ";
             break;
-
         case 5:
             echo "
             +---+
@@ -109,10 +92,9 @@ function print_man() {
             =========
             ";
             break;
-
         case 6:
             echo "
-            Me mataste we
+            Me mataste wey
             +---+
             |   |
             O   |
@@ -122,49 +104,36 @@ function print_man() {
             =========
             ";
             break;
-
     }
-
     echo "\n\n";
 
 }
 
 function print_game() {
-
     global $word_length, $discovered_letters;
-
     print_man();
-
     echo "Palabra de $word_length letras: \n\n";
     echo $discovered_letters;
     echo "\n\n";
-
 }
 
 function end_game() {
-
     global $attempts, $choosen_word, $discovered_letters;
-    
     clear();
-
     if ($attempts < MAX_ATTEMPTS) {
         echo "¡Felicidades! Has adivinado la palabra. 😸 \n\n";
+        echo "Te quedó " . MAX_ATTEMPTS - $attempts . " intentos\n";
     }
     else {
-
         echo "Suerte para la próxima, amigo. 😿 \n\n";
         print_man();
-
-    }
-
+    }    
     echo "La palabra es: $choosen_word\n";
     echo "Tú descubriste: $discovered_letters";
-
 }
 
 $possible_words = ["Bebida", "Prisma", "Ala", "Dolor", "Piloto", "Baldosa", "Terremoto", "Asteroide", "Gallo", "Platzi"];
 define("MAX_ATTEMPTS", 6);
-
 
 echo "😼 ¡Jueguemos al ahorcado! \n\n";
 
@@ -176,7 +145,6 @@ $discovered_letters = str_pad("", $word_length, "_");
 $attempts = 0;
 
 do {
-
     // Damos la bienvenida al jugador
     print_game();
 
@@ -191,15 +159,12 @@ do {
     else {
         print_wrong_letter();
     }
-
     clear();
 
 } while($attempts < MAX_ATTEMPTS && $discovered_letters != $choosen_word);
 
 end_game();
-
 echo "\n";
-
 /*
 
 Ideas a mejorar (retos):
